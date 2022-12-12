@@ -8,12 +8,15 @@ top_score = {'LLCoolMel': 106600}
 
 
 class ScoreBoard(RawTurtle):
-    def __init__(self, t, n, level):
+    def __init__(self, t, n, level, c):
         super().__init__(t)
+        self.original_color = c
+        self.c = c
         self.penup()
         self.hideturtle()
         self.goto(-390, 140)
-        self.color("#ccd130")
+        self.color(c[1])
+
         self.current_score = 0
         self.num_lives = n
         self.hunkset = False
@@ -23,13 +26,15 @@ class ScoreBoard(RawTurtle):
         self.scores = top_score
         self.boost = 1.0
         self.level = level
+        print(self.level)
         with open('scores.json', 'r+') as file:
             self.scores = json.load(file)
-        self.update_scoreboard(self.level)
+        self.update_scoreboard(self.level, c)
 
 
-    def update_scoreboard(self, level):
-
+    def update_scoreboard(self, level, c):
+        print(level)
+        print(c[0], c[1])
         highest_score = 0
         name = ''
         txt = "{:,}"
@@ -40,9 +45,8 @@ class ScoreBoard(RawTurtle):
             pass
         except ValueError:
             pass
-
+        self.color(c[1])
         self.clear()
-        self.color('#40916c')
         self.goto(-390, 150)
         self.write(
             f"Score: {txt.format(self.current_score)}",
@@ -54,7 +58,6 @@ class ScoreBoard(RawTurtle):
                 'normal'
             )
         )
-        self.color('#40916c')
         self.goto(-220, 155)
         self.write(
             f"Level: {level}",
@@ -93,7 +96,7 @@ class ScoreBoard(RawTurtle):
 
 
         self.goto(390, 150)
-        self.color('#40916c')
+        self.color(c[1])
         self.write(
             f"Stars: {self.num_lives}",
             False,
@@ -109,7 +112,7 @@ class ScoreBoard(RawTurtle):
 
     def take_star(self):
         self.num_lives -= 1
-        self.update_scoreboard(self.level)
+        self.update_scoreboard(self.level, self.c)
         if self.num_lives == 0:
             if len(self.scores) > 0:
                 if len(self.scores) >= 10:
@@ -163,8 +166,8 @@ class ScoreBoard(RawTurtle):
                 self.milset = True
                 self.give_star()
         sm.play_brick(n)
-        self.update_scoreboard(self.level)
+        self.update_scoreboard(self.level, self.c)
 
     def give_star(self):
         self.num_lives += 1
-        self.update_scoreboard(self.level)
+        self.update_scoreboard(self.level, self.c)

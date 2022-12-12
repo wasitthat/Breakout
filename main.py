@@ -9,8 +9,8 @@ splash_music = pygame.mixer.Sound('sounds/splash.oga')
 
 window = Tk()
 game = Game(window)
-game.load_board()
-# game.make_leaderboard()
+#game.load_board()
+game.make_leaderboard()
 normal_score = 500
 
 
@@ -33,7 +33,7 @@ def run_game():
             if not game.tripleplay:
 
                 # check for tripleplay status
-                if game.star.num_bounces >= 30 or game.scoreboard.boost >= 5.0:
+                if game.star.num_bounces >= 10 or game.scoreboard.boost >= 5.0:
                     sm.play_tripleplay()
                     game.tripleplay = True
                     num_live_stars = 3
@@ -80,7 +80,10 @@ def run_game():
                                 each.hideturtle()
                                 game.scoreboard.boost = 1.0
                                 game.fired = False
-                                game.scoreboard.update_scoreboard(game.current_level)
+                                # game.scoreboard.update_scoreboard(
+                                #     game.current_level,
+                                #     game.brix[game.current_level-1][0].get_color()[1]
+                                # )
                             else:
 
                                 # hide that turtle

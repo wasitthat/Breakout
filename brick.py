@@ -25,6 +25,7 @@ class Brick(RawTurtle):
         self.x = x
         self.y = y
         self.i = i
+        self.n = n
 
         self.turtlesize(1, 3.857)
         self.hideturtle()
@@ -32,13 +33,16 @@ class Brick(RawTurtle):
         self.shape('square')
         self.penup()
         self.speed(0)
-        self.reset_brick(i, n)
+        self.reset_brick()
 
+    def get_color(self):
+        return self.color()
 
-    def reset_brick(self, i, n):
+    def reset_brick(self):
+        print(f'self.i: {self.i}, self.n: {self.n}')
         self.setpos(self.x, self.y)
-        self.color(COLORS[i][n])
-        self.pencolor(OUTLINES[i][n])
+        self.color(COLORS[self.i][self.n])
+        self.pencolor(OUTLINES[self.i][self.n])
 
 
     def hit_brick(self, b):
