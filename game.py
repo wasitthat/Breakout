@@ -11,7 +11,6 @@ from star import Star
 from ufo import Ufo
 from brick import Brick
 import sound_module as sm
-from matplotlib import colors
 NUMBER_OF_LIVES = 3
 WINDOW_SIZE = (1000, 800)
 LOGO_SIZE = (600, 280)
@@ -61,6 +60,7 @@ class Game:
         self.stars = []
         self.tripleplay = False
         self.current_level = 1
+
 
 
         # --------Main Window------- #
@@ -154,11 +154,6 @@ class Game:
         self.t.register_shape("ufo_assets/yoofow7.gif")
 
 
-
-
-
-
-
         # -------Brick Location Data-------- #
 
         self.start_x = (-WIN_X/2)+192
@@ -167,7 +162,6 @@ class Game:
         self.brick_x = 81
         self.brick_y = 21
         self.horiz_gap = 7
-
 
 
 
@@ -235,12 +229,11 @@ class Game:
         # -------Play Button------- #
 
         self.playImg = imageToPhotoImage('screen_assets/play.png', 250, 120)
-
         self.scoreboard = ScoreBoard(
             self.t,
             NUMBER_OF_LIVES,
             self.current_level,
-            self.brix[0][0].get_color()
+            self.brix[self.current_level-1][0].get_color()
         )
         self.playButton = Button(
             self.screen,
@@ -250,9 +243,10 @@ class Game:
             borderwidth=0,
             border=0
         )
-        self.playButton.image = self.playImg                            # make sure
+        self.playButton.image = self.playImg
         self.loadingScreen.grid_forget()
-        self.playButton.grid(column=1, row=4)                           # put it down
+        self.playButton.grid(column=1, row=4)
+
 
         # -------KeyBindings------- #
 
@@ -264,7 +258,6 @@ class Game:
 
 
         # --------Name Entry Image-------- #
-
 
         self.nameImg = imageToPhotoImage('screen_assets/name.png', HELP_W, HELP_H)
         self.nameLbl = Label(
@@ -299,8 +292,8 @@ class Game:
         )
         self.submitBtn.image = self.submitImg
 
-        # --------Help Image------- #
 
+        # --------Help Image------- #
 
         self.helpImg = imageToPhotoImage('screen_assets/help4.png', HELP_W, HELP_H)
         self.helpLbl = Label(
@@ -315,8 +308,7 @@ class Game:
 
         # --------LeaderBoard------- #
 
-        self.font = ImageFont.truetype('times', 18
-                                       )
+        self.font = ImageFont.truetype('times', 18)
         self.leaderImg = PIL.Image.open('screen_assets/high.png').convert('RGBA')
         self.leaderImg.thumbnail((HELP_W, HELP_H))
         self.leaderMask = Image.new('RGBA', (HELP_W, HELP_H))
@@ -345,8 +337,9 @@ class Game:
         scores = self.scoreboard.get_scores()
         scores = sorted(scores.items(), key=operator.itemgetter(1), reverse=True)
         w = 132
-
         txt = "{:,}"
+        self.leaderMask = Image.new('RGBA', (HELP_W, HELP_H))
+        self.mdr = ImageDraw.Draw(self.leaderMask)
         for each in scores:
             self.mdr.text(
                 xy=((HELP_H/2)-(self.font.getsize(each[0]+' - '+txt.format(each[1]))[0]/2)+85, w),
@@ -373,6 +366,7 @@ class Game:
         else:
             self.led = True
             self.pause = True
+            self.make_leaderboard()
             self.leaderImg.paste(self.leaderMask, (0, 0), self.leaderMask)
 
             img = ImageTk.PhotoImage(self.leaderImg)
@@ -410,7 +404,7 @@ class Game:
                 every.reset_brick()
         self.scoreboard.update_scoreboard(
             self.current_level,
-            self.brix[0][0].get_color()
+            self.brix[self.current_level-1][0].get_color()
         )
 
         for each in self.stars:
@@ -437,6 +431,10 @@ class Game:
 
     def submit(self):
         self.name.set(self.nameEntry.get())
+
+        self.scoreboard.check_leaderboard(self.name.get())
+        self.scoreboard.update_scoreboard(self.current_level, self.brix[self.current_level-1][0].get_color())
+
         sm.play_fire()
 
 
@@ -470,12 +468,11 @@ class Game:
     def load_board(self):
         self.t.tracer(0, 0)
         for n in range(NUM_ROWS):
-            print(n)
             col = []
             for j in range(NUM_COLS):
                 x = self.start_x+(j*self.brick_x)+(j*self.horiz_gap)
                 y = self.start_y-(n*self.horiz_gap)-(self.brick_y*n)
-                b = Brick(self.t, n, x, y, 0)
+                b = Brick(self.t, n, x, y, self.current_level-1)
                 col.append(b)
             self.brix.append(col)
         self.t.tracer(1)
@@ -519,21 +516,13 @@ class Game:
 
         for each in range(NUM_ROWS):
             for every in self.brix[each]:
-                print(f'every.i: {every.i}')
                 every.i += 1
                 every.i %= NUM_ROWS
                 every.reset_brick()
                 every.showturtle()
         self.scoreboard.level += 1
-        print(self.scoreboard.level)
         self.scoreboard.level %= NUM_ROWS
-        print(self.scoreboard.level)
         self.scoreboard.c = self.brix[self.current_level][0].get_color()
-        #self.make_leaderboard()
-        # self.scoreboard.update_scoreboard(
-        #     self.current_level,
-        #     self.brix[self.current_level][0].get_color()[1]
-        # )
         self.scoreboard.give_star()
         self.tripleplay = False
         sm.play_new_game()
@@ -577,12 +566,11 @@ class Game:
         self.scoreboard.check_leaderboard(self.name.get())
         self.scoreboard.update_scoreboard(
             self.current_level,
-            self.brix[0][0].get_color()
+            self.brix[self.current_level-1][0].get_color()
         )
         for each in range(NUM_ROWS):
             for every in self.brix[each]:
                 every.i = each
-        #self.make_leaderboard()
         self.nameLbl.grid_forget()
         self.submitBtn.grid_forget()
         self.nameEntry.grid_forget()

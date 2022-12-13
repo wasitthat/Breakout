@@ -26,15 +26,20 @@ class ScoreBoard(RawTurtle):
         self.scores = top_score
         self.boost = 1.0
         self.level = level
-        print(self.level)
+        self.read_scores()
+
+    def read_scores(self):
         with open('scores.json', 'r+') as file:
             self.scores = json.load(file)
-        self.update_scoreboard(self.level, c)
+        self.update_scoreboard(self.level, self.c)
 
+    def write_scores(self):
+        file = open('scores.json', 'r+')
+        file.truncate()
+        file.write(json.dumps(self.scores))
+        file.close()
 
     def update_scoreboard(self, level, c):
-        print(level)
-        print(c[0], c[1])
         highest_score = 0
         name = ''
         txt = "{:,}"
@@ -137,10 +142,9 @@ class ScoreBoard(RawTurtle):
             elif len(self.scores) >= 10:
                 self.scores.pop(min(self.scores))
             self.scores[name] = self.current_score
-        file = open('scores.json', 'r+')
-        file.truncate()
-        file.write(json.dumps(self.scores))
-        file.close()
+        self.write_scores()
+        self.read_scores()
+
 
 
 

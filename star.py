@@ -82,11 +82,11 @@ class Star(RawTurtle):
                     return each, every, True
 
 
-                # if the star has gone above the bricks, reflect
-                if self.pos()[1] > 175:
-                    sm.play_ceiling()
-                    self.last_reflection = time.time()
-                    self.seth(360-heading)
+            # if the star has gone above the bricks, reflect
+            if self.pos()[1] > 175:
+                sm.play_ceiling()
+                self.last_reflection = time.time()
+                self.seth(360-heading)
         # left side reflections
 
         # heading west????
