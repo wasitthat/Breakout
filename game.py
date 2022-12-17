@@ -11,6 +11,7 @@ from star import Star
 from ufo import Ufo
 from brick import Brick
 import sound_module as sm
+
 NUMBER_OF_LIVES = 3
 WINDOW_SIZE = (1000, 800)
 LOGO_SIZE = (600, 280)
@@ -61,10 +62,7 @@ class Game:
         self.tripleplay = False
         self.current_level = 1
 
-
-
         # --------Main Window------- #
-
 
         self.screen = Frame(
             root,
@@ -75,30 +73,28 @@ class Game:
         )
         self.screen.grid()
 
-
         # --------Logo and Background Image-------- #
 
-
-        self.logoImg = Image.open('screen_assets/5321941.png')      # load logo
-        self.logoImg = self.logoImg.resize(LOGO_SIZE)               # resize
-        self.bgImg = Image.open('screen_assets/back.png')           # background image
-        self.bgImg = self.bgImg.resize(WINDOW_SIZE)                 # resize
-        self.mask = Image.new(                                      # transparent layer setup
+        self.logoImg = Image.open('screen_assets/5321941.png')  # load logo
+        self.logoImg = self.logoImg.resize(LOGO_SIZE)  # resize
+        self.bgImg = Image.open('screen_assets/back.png')  # background image
+        self.bgImg = self.bgImg.resize(WINDOW_SIZE)  # resize
+        self.mask = Image.new(  # transparent layer setup
             mode='RGBA',
             size=WINDOW_SIZE,
             color='white'
         )
-        self.mask.paste(                                            # paste background
+        self.mask.paste(  # paste background
             self.bgImg,
             (0, 0)
         )
-        self.mask.paste(                                            # paste logo
+        self.mask.paste(  # paste logo
             self.logoImg,
-            (int((WIN_X-LOGO_SIZE[0])/2),  -40),
+            (int((WIN_X - LOGO_SIZE[0]) / 2), -40),
             self.logoImg
         )
-        self.mask = ImageTk.PhotoImage(self.mask)                   # convert layer to image
-        self.label = Label(                                         # load label with image
+        self.mask = ImageTk.PhotoImage(self.mask)  # convert layer to image
+        self.label = Label(  # load label with image
             self.screen,
             width=WIN_X,
             height=WIN_Y,
@@ -106,15 +102,13 @@ class Game:
             borderwidth=0,
             border=0
         )
-        self.label.image = self.mask                                # make sure
-        self.label.grid(                                            # put it down
+        self.label.image = self.mask  # make sure
+        self.label.grid(  # put it down
             column=0,
             row=0,
             columnspan=3,
             rowspan=9
         )
-
-
 
         # -------Copyright-------- #
 
@@ -146,24 +140,20 @@ class Game:
             border=0
         )
 
-
         # --------Load Game Screen to TurtleScreen------- #
 
         self.t = TurtleScreen(self.game_screen)
         self.t.listen()
         self.t.register_shape("ufo_assets/yoofow7.gif")
 
-
         # -------Brick Location Data-------- #
 
-        self.start_x = (-WIN_X/2)+192
+        self.start_x = (-WIN_X / 2) + 192
         self.start_y = 100
         self.pause_bit = 0
         self.brick_x = 81
         self.brick_y = 21
         self.horiz_gap = 7
-
-
 
         # --------Pause Button-------- #
 
@@ -176,8 +166,7 @@ class Game:
             borderwidth=0,
             border=0
         )
-        self.pauseButton.image = self.pauseImg2                         # make sure
-
+        self.pauseButton.image = self.pauseImg2  # make sure
 
         # --------Yes Button-------- #
 
@@ -191,7 +180,6 @@ class Game:
             highlightthickness=0,
             command=lambda: self.restart(root)
         )
-
 
         # --------No Button-------- #
 
@@ -207,7 +195,6 @@ class Game:
             command=self.quit_game
         )
 
-
         # --------Available Shapes for Turtles-------- #
 
         for i in range(1, 19):
@@ -216,7 +203,6 @@ class Game:
 
         # -------Class Instances------- #
         self.ufo = Ufo(self.t)
-
 
         # --------Stars-------- #
         for s in range(NUM_STARS):
@@ -233,7 +219,7 @@ class Game:
             self.t,
             NUMBER_OF_LIVES,
             self.current_level,
-            self.brix[self.current_level-1][0].get_color()
+            self.brix[self.current_level - 1][0].get_color()
         )
         self.playButton = Button(
             self.screen,
@@ -247,15 +233,12 @@ class Game:
         self.loadingScreen.grid_forget()
         self.playButton.grid(column=1, row=4)
 
-
         # -------KeyBindings------- #
 
         root.bind('<F1>', lambda e: self.show_help())
         root.bind('<F5>', lambda e: self.restart(root))
         root.bind('<F2>', lambda e: self.show_leaderboard(root))
         root.bind('<Return>', lambda e: self.playButton.invoke())
-
-
 
         # --------Name Entry Image-------- #
 
@@ -277,7 +260,6 @@ class Game:
             fg='#ff9e00'
         )
 
-
         # --------Submit Button-------#
 
         self.submitImg = imageToPhotoImage('screen_assets/submit.png', 250, 97)
@@ -292,7 +274,6 @@ class Game:
         )
         self.submitBtn.image = self.submitImg
 
-
         # --------Help Image------- #
 
         self.helpImg = imageToPhotoImage('screen_assets/help4.png', HELP_W, HELP_H)
@@ -304,7 +285,6 @@ class Game:
             borderwidth=0,
             border=0
         )
-
 
         # --------LeaderBoard------- #
 
@@ -321,17 +301,13 @@ class Game:
             background='#ffffff'
         )
 
-
     # ======================================== #
     #                  methods                 #
     # ======================================== #
 
-
     def initializeGameScreen(self):
 
-
         pass
-
 
     def make_leaderboard(self):
         scores = self.scoreboard.get_scores()
@@ -342,17 +318,16 @@ class Game:
         self.mdr = ImageDraw.Draw(self.leaderMask)
         for each in scores:
             self.mdr.text(
-                xy=((HELP_H/2)-(self.font.getsize(each[0]+' - '+txt.format(each[1]))[0]/2)+85, w),
+                xy=((HELP_H / 2) - (self.font.getsize(each[0] + ' - ' + txt.format(each[1]))[0] / 2) + 85, w),
                 text=f"{each[0]} - {txt.format(each[1])}",
                 fill=f"#b7e4c7ff",
                 font=self.font,
                 stroke_fill=f"#ffffff00",
-                #stroke_width=1
+                # stroke_width=1
             )
             w += 28
 
     # --------Show Leaderboard-------- #
-
 
     def show_leaderboard(self, root):
         if self.led:
@@ -378,11 +353,7 @@ class Game:
             root.unbind('<Return>')
             self.screen.update()
 
-
-
-
     # -------Restart--------- #
-
 
     def restart(self, root):
         root.bind('<Left>', lambda e: self.ufo.goLeft())
@@ -404,14 +375,12 @@ class Game:
                 every.reset_brick()
         self.scoreboard.update_scoreboard(
             self.current_level,
-            self.brix[self.current_level-1][0].get_color()
+            self.brix[self.current_level - 1][0].get_color()
         )
 
         for each in self.stars:
             each.hideturtle()
             each.setpos(self.ufo.pos())
-
-
 
         self.name.set('')
         self.num_bricks = 40
@@ -421,33 +390,26 @@ class Game:
         self.no.grid_forget()
         self.play_game(root)
 
-
     def get_leaderImg(self):
         return self.leaderImg
 
-
     # --------Submit Name-------- #
-
 
     def submit(self):
         self.name.set(self.nameEntry.get())
 
         self.scoreboard.check_leaderboard(self.name.get())
-        self.scoreboard.update_scoreboard(self.current_level, self.brix[self.current_level-1][0].get_color())
+        self.scoreboard.update_scoreboard(self.current_level, self.brix[self.current_level - 1][0].get_color())
 
         sm.play_fire()
 
-
     # --------Quit Game-------- #
-
 
     def quit_game(self):
         self.player_continues = False
         return
 
-
     # --------Show Help Screen------- #
-
 
     def show_help(self):
         if self.helped:
@@ -460,27 +422,21 @@ class Game:
             self.pause = True
             sm.play_fire()
 
-
-
     # --------Load Board-------- #
-
 
     def load_board(self):
         self.t.tracer(0, 0)
         for n in range(NUM_ROWS):
             col = []
             for j in range(NUM_COLS):
-                x = self.start_x+(j*self.brick_x)+(j*self.horiz_gap)
-                y = self.start_y-(n*self.horiz_gap)-(self.brick_y*n)
-                b = Brick(self.t, n, x, y, self.current_level-1)
+                x = self.start_x + (j * self.brick_x) + (j * self.horiz_gap)
+                y = self.start_y - (n * self.horiz_gap) - (self.brick_y * n)
+                b = Brick(self.t, n, x, y, self.current_level - 1)
                 col.append(b)
             self.brix.append(col)
         self.t.tracer(1)
 
-
-
     # --------Play--------- #
-
 
     def play_game(self, root):
         root.bind('<Left>', lambda e: self.ufo.goLeft())
@@ -501,9 +457,7 @@ class Game:
         self.game_screen.grid(column=0, row=4, columnspan=3, rowspan=4)
         self.ufo.showturtle()
 
-
     # --------Increase Level-------- #
-
 
     def increase_level(self):
         self.num_bricks = NUM_BRICKS
@@ -529,7 +483,6 @@ class Game:
 
     # --------Pause-------- #
 
-
     def pause_game(self):
         if self.pause:
             self.pauseButton.grid_forget()
@@ -541,9 +494,7 @@ class Game:
             self.pause = True
             sm.play_fire()
 
-
     # --------Game End-------- #
-
 
     def game_end(self, root):
         self.scoreboard.num_lives = NUMBER_OF_LIVES
@@ -566,7 +517,7 @@ class Game:
         self.scoreboard.check_leaderboard(self.name.get())
         self.scoreboard.update_scoreboard(
             self.current_level,
-            self.brix[self.current_level-1][0].get_color()
+            self.brix[self.current_level - 1][0].get_color()
         )
         for each in range(NUM_ROWS):
             for every in self.brix[each]:
@@ -581,13 +532,10 @@ class Game:
         self.yes.grid(column=0, row=0, padx=(175, 0))
         self.screen.update()
 
-
     def dummy(self):
         pass
 
-
     # --------Fire--------- #
-
 
     def fire(self):
         if not self.fired:

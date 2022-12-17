@@ -25,14 +25,13 @@ class Ufo(RawTurtle):
         self.forward(10)
         self.check_x()
 
-
     def check_x(self):
         if self.pos()[0] > 450:
             self.hideturtle()
-            self.setx(self.pos()[0]*-1+100)
+            self.setx(self.pos()[0] * -1 + 100)
             self.showturtle()
         elif -450 > self.pos()[0]:
             self.hideturtle()
-            self.setx(self.pos()[0]*-1-100)
+            self.setx(self.pos()[0] * -1 - 100)
             self.showturtle()
             sm.play_random_ufo_sound()

@@ -17,7 +17,6 @@ class Star(RawTurtle):
         self.fired = True
         self.num_bounces = 0
 
-
     @property
     def move(self):
         heading = self.heading()
@@ -27,7 +26,6 @@ class Star(RawTurtle):
             self.seth(190)
         self.forward(1)
         return self.check_board()
-
 
     def check_board(self):
         star_x = math.floor(self.pos()[0])
@@ -43,32 +41,31 @@ class Star(RawTurtle):
                 diff_x = math.floor(brick_x - star_x)
                 diff_y = math.floor(brick_y - star_y)
 
-
                 # at the edge of a brick?
                 if abs(diff_x) <= 41 and not abs(diff_y) == 11:
-                    if 0 <= abs(diff_y) <= 11:       # within the height of the brick?
-                        if 0 <= heading < 180:              # heading north
-                            self.seth((360 - heading)+180)
-                        elif 180 <= heading < 360:          # heading south
-                            self.seth((360 - heading)+180)
-                        elif 270 <= heading < 90:           # heading east
-                            self.seth((360 - heading)+180)
-                        elif 90 <= heading < 270:           # heading west
-                            self.seth((360 - heading)+180)
+                    if 0 <= abs(diff_y) <= 11:  # within the height of the brick?
+                        if 0 <= heading < 180:  # heading north
+                            self.seth((360 - heading) + 180)
+                        elif 180 <= heading < 360:  # heading south
+                            self.seth((360 - heading) + 180)
+                        elif 270 <= heading < 90:  # heading east
+                            self.seth((360 - heading) + 180)
+                        elif 90 <= heading < 270:  # heading west
+                            self.seth((360 - heading) + 180)
                         self.last_reflection = time.time()
                         self.num_bounces += 1
                         return each, every, True
 
                 # at top or bottom of brick?
                 elif abs(diff_y) <= 11 and not abs(diff_x) == 41:
-                    if 0 <= abs(diff_x) <= 41:       # within the height of the brick?
-                        if 0 <= heading < 180:              # heading north
+                    if 0 <= abs(diff_x) <= 41:  # within the height of the brick?
+                        if 0 <= heading < 180:  # heading north
                             self.seth(360 - heading)
-                        elif 180 <= heading < 360:          # heading south
+                        elif 180 <= heading < 360:  # heading south
                             self.seth(360 - heading)
-                        elif 270 <= heading < 90:           # heading east
+                        elif 270 <= heading < 90:  # heading east
                             self.seth(360 - heading)
-                        elif 90 <= heading < 270:           # heading west
+                        elif 90 <= heading < 270:  # heading west
                             self.seth(360 - heading)
                         self.last_reflection = time.time()
                         self.num_bounces += 1
@@ -81,12 +78,11 @@ class Star(RawTurtle):
                     self.num_bounces += 1
                     return each, every, True
 
-
             # if the star has gone above the bricks, reflect
             if self.pos()[1] > 175:
                 sm.play_ceiling()
                 self.last_reflection = time.time()
-                self.seth(360-heading)
+                self.seth(360 - heading)
         # left side reflections
 
         # heading west????

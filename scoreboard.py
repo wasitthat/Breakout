@@ -99,7 +99,6 @@ class ScoreBoard(RawTurtle):
             )
         )
 
-
         self.goto(390, 150)
         self.color(c[1])
         self.write(
@@ -113,8 +112,6 @@ class ScoreBoard(RawTurtle):
             )
         )
 
-
-
     def take_star(self):
         self.num_lives -= 1
         self.update_scoreboard(self.level, self.c)
@@ -127,9 +124,6 @@ class ScoreBoard(RawTurtle):
                     self.podiums = True
             else:
                 self.podiums = True
-
-
-
 
     def check_leaderboard(self, name):
         if self.podiums:
@@ -145,10 +139,6 @@ class ScoreBoard(RawTurtle):
         self.write_scores()
         self.read_scores()
 
-
-
-
-
     def get_scores(self):
         return self.scores
 
@@ -160,7 +150,7 @@ class ScoreBoard(RawTurtle):
             self.boost *= .95
         self.boost = round(self.boost, 1)
         self.start_time = time.time()
-        self.current_score += floor(p*self.boost)
+        self.current_score += floor(p * self.boost)
         if not self.hunkset:
             if self.current_score >= 100000:
                 self.hunkset = True

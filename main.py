@@ -4,6 +4,7 @@ from game import Game
 import time
 from math import floor
 import sound_module as sm
+
 pygame.init()
 splash_music = pygame.mixer.Sound('sounds/splash.oga')
 triple_threshold = 20
@@ -39,7 +40,7 @@ def run_game():
                     num_live_stars = 3
                     for each in range(len(game.stars)):
                         game.stars[each].setpos(game.stars[0].pos())
-                        game.stars[each].seth(game.stars[0].heading()+heading*(each+1))
+                        game.stars[each].seth(game.stars[0].heading() + heading * (each + 1))
                         heading *= -1
                         game.stars[each].showturtle()
 
@@ -65,7 +66,6 @@ def run_game():
                         x, y, state = each.move
                         multiplier = -1
                         if num_live_stars == 1:
-
                             # enable tripleplay availability
                             game.tripleplay = False
 

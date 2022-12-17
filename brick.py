@@ -1,6 +1,7 @@
 from turtle import RawTurtle
 import pygame
 from matplotlib import colors
+
 pygame.init()
 
 O1 = ['#b7e4c7', '#95d5b2', '#74c69d', '#52b788', '#40916c']
@@ -17,7 +18,6 @@ C5 = ['#240046', '#3c096c', '#5a189a', '#7b2cbf', '#9d4edd']
 
 OUTLINES = [O1, O2, O3, O4, O5]
 COLORS = [C1, C2, C3, C4, C5]
-
 
 
 class Brick(RawTurtle):
@@ -44,7 +44,6 @@ class Brick(RawTurtle):
         self.pencolor(OUTLINES[self.i][self.n])
         self.pensize(2000)
 
-
     def hit_brick(self, b):
         color_index = COLORS[self.i].index(colors.to_hex(b.color()[1]))
         if colors.to_hex(b.color()[1]) == COLORS[self.i][-1]:  # if that brick is green
@@ -52,6 +51,6 @@ class Brick(RawTurtle):
             b.goto(-500, -500)  # and moves off-screen
             return 0
         else:
-            b.color(COLORS[self.i][color_index+1])  # set next color
-            b.pencolor(OUTLINES[self.i][color_index+1])
+            b.color(COLORS[self.i][color_index + 1])  # set next color
+            b.pencolor(OUTLINES[self.i][color_index + 1])
             return len(COLORS[0]) - color_index - 1
